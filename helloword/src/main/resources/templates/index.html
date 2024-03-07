@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th=http://thymeleaf.org>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World!!</title>
+</head>
+
+<body>
+    <h1>Hello World!!!</h1>
+    <h4>Este é meu primeiro site!!</h4>
+    <span th:text="${msg}"></span>
+    <br>
+    <form method="post">
+        Buscar : <input type="text" name="buscar" id="buscar">
+        <button type="submit">Enviar</button>
+    </form>
+    <span th:if="${buscar}">
+        O valor da busca é: <span th:text="${buscar}"></span>
+    </span>
+</body>
+
+</html>
