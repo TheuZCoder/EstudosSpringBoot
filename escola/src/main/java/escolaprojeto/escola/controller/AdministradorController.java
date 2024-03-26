@@ -21,10 +21,11 @@ public class AdministradorController {
 
         String cpfVerificação = pcar.findByCpf(adm.getCpf()).getCpf();
 
-        if (cpfVerificação.equals(adm.getCpf())){} 
-        ar.save(adm);
-        //enviar mensagem de cadastro com sucesso
-        System.out.println("Cadastro realizado com succeso!");
+        if (cpfVerificação.equals(adm.getCpf())){
+            ar.save(adm);
+            //enviar mensagem de cadastro com sucesso
+            System.out.println("Cadastro realizado com succeso!");
+        } 
         return "login/login_adm";
     }
     
