@@ -10,22 +10,22 @@ public class RotaController {
     public String home() {
         return "home"; // Este é o nome do seu arquivo home.html (sem extensão)
     }
-    @GetMapping("/login_adm")
+    @GetMapping("/login-adm")
     public String loginAdm() {
-        return "login/login_adm";
+        return "login/login-adm";
     }
-    @GetMapping("/login_professor")
+    @GetMapping("/login-professor")
     public String loginProfessor() {
-        return "login/login_professor";
+        return "login/login-professor";
     }
-    @GetMapping("/login_aluno")
+    @GetMapping("/login-aluno")
     public String loginAluno() {
-        return "login/login_aluno";
+        return "login/login-aluno";
     }
 
-    @GetMapping("/cad_adm")
+    @GetMapping("/cad-adm")
     public String cadAdm() {
-        return "cadastro/cad_adm";
+        return "cadastro/cad-adm";
     }
     
     
