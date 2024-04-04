@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 public class AdministradorController {
@@ -22,6 +21,8 @@ public class AdministradorController {
 
     boolean acessoAdm = false;
 
+
+    //METODO PARA FAZER O CADASTRO DO ADMINISTRADOR COM BASE NOS CPF LISTADOS NO SERVIDOR DE CPF AUTORIZADOS
     @PostMapping("cadastro-adm")
     public String postCadastroAdm(AdministradorModel adm) {
 
@@ -35,6 +36,8 @@ public class AdministradorController {
         return "login/login-adm";
     }
 
+
+    //CODIGO PARA IMPEDIR QUALQUER UM DE ENTRAR DIRETO NA PAGINA DE ADM
     @GetMapping("/interna-adm")
     public String acessoPageInternaAdm() {
         String acesso = "";
@@ -54,6 +57,7 @@ public class AdministradorController {
         return acesso;
     }
 
+    //METODO PARA FAZER LOGIN DO ADMINISTRADOR
     @PostMapping("acesso-adm")
     public ModelAndView AcessoPageAdm(@RequestParam String cpf, @RequestParam String senha,
             RedirectAttributes attributes) {
@@ -63,8 +67,6 @@ public class AdministradorController {
         if (usuario == null) {
             // Caso o CPF não exista, exibe uma mensagem de erro
             ModelAndView errorMv = new ModelAndView();
-            errorMv.addObject("msg", "CPF não encontrado. Por favor, verifique o CPF inserido.");
-            errorMv.addObject("classe", "alert-danger"); // Classe para alerta vermelho
             errorMv.setViewName("redirect:/login-adm");
             return errorMv;
         }
@@ -77,14 +79,11 @@ public class AdministradorController {
             String mensagem = "Login Realizado com sucesso";
             System.out.println(mensagem);
             acessoAdm = true;
-            mv.addObject("msg", mensagem);
-            mv.addObject("classe", "alert-success"); // Classe para alerta verde
+
             mv.setViewName("interno/interna-adm");
         } else {
             String mensagem = "Senha Incorreta";
             System.out.println(mensagem);
-            mv.addObject("msg", mensagem);
-            mv.addObject("classe", "alert-danger"); // Classe para alerta vermelho
             mv.setViewName("redirect:/login-adm");
         }
     
