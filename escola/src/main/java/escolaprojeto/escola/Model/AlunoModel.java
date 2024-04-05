@@ -1,12 +1,18 @@
 package escolaprojeto.escola.Model;
 
+import java.io.Serializable;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
-public class AlunoModel {
+@Entity
+public class AlunoModel implements Serializable{
 
+    @Id
     private Long id;
     private String nome;
     private String matricula;
+    private String disciplina;
 
     
     public Long getId() {
@@ -27,6 +33,12 @@ public class AlunoModel {
     public void setMatricula(String matricula) {
         this.matricula = matricula;
     }
-
+    public String getDisciplina() {
+        return disciplina;
+    }
+    public void setDisciplina(String disciplina) {
+        this.disciplina = disciplina;
+    }
+    
     
 }

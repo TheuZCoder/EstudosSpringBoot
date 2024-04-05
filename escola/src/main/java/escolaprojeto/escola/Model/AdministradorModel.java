@@ -1,7 +1,6 @@
 package escolaprojeto.escola.Model;
 
 import java.io.Serializable;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
