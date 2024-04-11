@@ -8,16 +8,19 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class AlunoModel implements Serializable{
+public class DocenteModel implements Serializable {
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String nome;
-    private String matricula;
     private String disciplina;
 
-    
+
+    public static long getSerialversionuid() {
+        return serialVersionUID;
+    }
     public Long getId() {
         return id;
     }
@@ -30,18 +33,12 @@ public class AlunoModel implements Serializable{
     public void setNome(String nome) {
         this.nome = nome;
     }
-    public String getMatricula() {
-        return matricula;
-    }
-    public void setMatricula(String matricula) {
-        this.matricula = matricula;
-    }
     public String getDisciplina() {
         return disciplina;
     }
     public void setDisciplina(String disciplina) {
         this.disciplina = disciplina;
     }
-    
+
     
 }

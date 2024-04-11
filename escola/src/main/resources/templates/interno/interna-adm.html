@@ -22,7 +22,7 @@
         <h2>Cadastro de Alunos</h2>
         <form action="cadastro-aluno" method="post">
             <label for="nome">Disciplinas:</label>
-            <input type="text" id="disciplinas" name="disciplinas">
+            <input type="text" id="disciplinas" name="disciplina">
             <label for="matricula">Matrícula:</label>
             <input type="text" id="matricula" name="matricula">
             <label for="nome">Nome:</label>
@@ -32,21 +32,51 @@
 
         <!-- Cadastro de Docente -->
         <h2>Cadastro de Docente</h2>
-        <form id="formDocente" th:action="@{/cadastrarDocente}" method="post">
+        <form action="cadastro-docente" method="post">
             <label for="nomeDocente">Nome do Docente:</label>
-            <input type="text" id="nomeDocente" name="nomeDocente">
+            <input type="text" id="nomeDocente" name="nome">
             <label for="nome">Disciplinas:</label>
-            <input type="text" id="disciplinas" name="disciplinas">
-            <button type="">Cadastrar Docente</button>
+            <input type="text" id="disciplinas" name="disciplina">
+            <button type="submit">Cadastrar Docente</button>
         </form>
 
-        <!-- Filtros -->
-        <h2>Filtros</h2>
         <button onclick="listarAlunos()">Listar Alunos</button>
         <button onclick="listarDocentes()">Listar Docentes</button>
-
-        <!-- Espaço para exibir resultados dos filtros -->
-        <div id="resultado">
+        <div id="resultado"></div> <!-- Espaço para exibir resultados dos filtros -->
+    
+        <script>
+            function listarAlunos() {
+                fetch('/cadastro-aluno')
+                    .then(response => response.json())
+                    .then(data => {
+                        atualizarLista(data);
+                    })
+                    .catch(error => console.error('Erro ao listar alunos:', error));
+            }
+    
+            function listarDocentes() {
+                fetch('/cadastro-docente')
+                    .then(response => response.json())
+                    .then(data => {
+                        atualizarLista(data);
+                    })
+                    .catch(error => console.error('Erro ao listar docentes:', error));
+            }
+    
+            function atualizarLista(data) {
+                let resultadoDiv = document.getElementById('resultado');
+                resultadoDiv.innerHTML = ''; // Limpar conteúdo anterior
+    
+                let lista = document.createElement('ul');
+                data.forEach(item => {
+                    let listItem = document.createElement('li');
+                    listItem.textContent = `Nome: ${item.nome}, Disciplina: ${item.disciplina}, Matricula: ${item.matricula}`;
+                    lista.appendChild(listItem);
+                });
+    
+                resultadoDiv.appendChild(lista);
+            }
+        </script>
 
         </div>
     </div>
