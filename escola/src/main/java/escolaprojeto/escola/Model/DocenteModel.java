@@ -16,8 +16,22 @@ public class DocenteModel implements Serializable {
     private Long id;
     private String nome;
     private String disciplina;
+    private String cpf;
+    private String senha;
 
 
+    public String getCpf() {
+        return cpf;
+    }
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+    public String getSenha() {
+        return senha;
+    }
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
     public static long getSerialversionuid() {
         return serialVersionUID;
     }

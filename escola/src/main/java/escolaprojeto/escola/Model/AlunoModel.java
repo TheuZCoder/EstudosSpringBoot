@@ -16,8 +16,18 @@ public class AlunoModel implements Serializable{
     private String nome;
     private String matricula;
     private String disciplina;
+    private String senha;
 
     
+    public static long getSerialversionuid() {
+        return serialVersionUID;
+    }
+    public String getSenha() {
+        return senha;
+    }
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
     public Long getId() {
         return id;
     }

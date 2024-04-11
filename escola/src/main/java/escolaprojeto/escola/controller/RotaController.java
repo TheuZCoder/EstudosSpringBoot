@@ -27,6 +27,8 @@ public class RotaController {
     public String cadAdm() {
         return "cadastro/cad-adm";
     }
+
+    
     
     
 }
