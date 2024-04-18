@@ -1,5 +1,7 @@
 package escolaprojeto.escola.Controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,7 +11,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import escolaprojeto.escola.Model.AlunoModel;
+import escolaprojeto.escola.Model.DisciplinaModel;
 import escolaprojeto.escola.Repository.AlunoRepository;
+import escolaprojeto.escola.Repository.DisciplinaRepository;
 
 @Controller
 public class AlunoController {
@@ -17,20 +21,39 @@ public class AlunoController {
     @Autowired
     private AlunoRepository alunoRepository;
 
+    @Autowired
+    private DisciplinaRepository disciplinaRepository;
+
     boolean acessoAluno = false;
 
     @PostMapping("/cadastro-aluno")
-    public String postCadastroAluno(AlunoModel aluno, Model model) {
+    public String postCadastroAluno(@RequestParam("disciplinas[]") List<String> disciplinas,
+            @RequestParam String matricula,
+            @RequestParam String nome,
+            @RequestParam String senha,
+            Model model) {
         // Verifica se algum campo obrigatório está vazio
-        if (aluno.getNome() == null || aluno.getNome().isEmpty() ||
-            aluno.getMatricula() == null || aluno.getMatricula().isEmpty() ||
-            aluno.getDisciplina() == null || aluno.getDisciplina().isEmpty() ||
-            aluno.getSenha() == null || aluno.getSenha().isEmpty()) {
+        if (nome == null || nome.isEmpty() ||
+                matricula == null || matricula.isEmpty() ||
+                disciplinas == null || disciplinas.isEmpty() ||
+                senha == null || senha.isEmpty()) {
             model.addAttribute("mensagem", "Por favor, preencha todos os campos.");
             return "interno/interna-adm";
         }
 
-        // Salva o aluno se todos os campos estiverem preenchidos
+        // Crie um novo aluno e adicione as disciplinas selecionadas
+        AlunoModel aluno = new AlunoModel();
+        aluno.setNome(nome);
+        aluno.setMatricula(matricula);
+        aluno.setSenha(senha);
+        for (String disciplinaId : disciplinas) {
+            DisciplinaModel disciplina = disciplinaRepository.findById(Long.parseLong(disciplinaId)).orElse(null);
+            if (disciplina != null) {
+                aluno.addDisciplina(disciplina);
+            }
+        }
+
+        // Salva o aluno
         alunoRepository.save(aluno);
         model.addAttribute("mensagem", "Cadastro de aluno realizado com sucesso!");
         return "interno/interna-adm";
@@ -39,20 +62,20 @@ public class AlunoController {
     @PostMapping("acesso-aluno")
     public ModelAndView AcessoPageAdm(@RequestParam String matricula, @RequestParam String senha,
             RedirectAttributes attributes) {
-    
+
         // Verifica se o CPF fornecido existe no banco de dados
         AlunoModel aluno = alunoRepository.findByMatricula(matricula);
         if (aluno == null) {
-            
+
             ModelAndView errorMv = new ModelAndView();
             errorMv.setViewName("redirect:/login-aluno");
             return errorMv;
         }
-    
+
         // O CPF existe, continua com a verificação da senha
         boolean acessoSenha = senha.equals(aluno.getSenha());
         ModelAndView mv = new ModelAndView();
-    
+
         if (acessoSenha) {
             String mensagem = "Login Realizado com sucesso";
             System.out.println(mensagem);
@@ -64,7 +87,7 @@ public class AlunoController {
             System.out.println(mensagem);
             mv.setViewName("redirect:/login-aluno");
         }
-    
+
         return mv;
     }
 }

@@ -21,16 +21,20 @@
         <!-- Cadastro de Alunos -->
         <h2>Cadastro de Alunos</h2>
         <form action="cadastro-aluno" method="post">
-            <label for="nome">Disciplinas:</label>
-            <input type="text" id="disciplinas" name="disciplina">
+            <label for="disciplinas">Disciplinas:</label>
+            <label>Disciplinas:</label>
+            <div id="checkboxContainer">
+
+            </div>
             <label for="matricula">Matrícula:</label>
             <input type="text" id="matricula" name="matricula">
             <label for="nome">Nome:</label>
             <input type="text" id="nome" name="nome">
-            <label for="nome">Senha:</label>
+            <label for="senha">Senha:</label>
             <input type="password" id="senha" name="senha">
             <button type="submit">Cadastrar Aluno</button>
         </form>
+
 
         <!-- Cadastro de Docente -->
         <h2>Cadastro de Docente</h2>
@@ -49,7 +53,7 @@
         <button onclick="listarAlunos()">Listar Alunos</button>
         <button onclick="listarDocentes()">Listar Docentes</button>
         <div id="resultado"></div> <!-- Espaço para exibir resultados dos filtros -->
-    
+
         <script>
             function listarAlunos() {
                 fetch('/cadastro-aluno')
@@ -59,7 +63,7 @@
                     })
                     .catch(error => console.error('Erro ao listar alunos:', error));
             }
-    
+
             function listarDocentes() {
                 fetch('/cadastro-docente')
                     .then(response => response.json())
@@ -68,23 +72,47 @@
                     })
                     .catch(error => console.error('Erro ao listar docentes:', error));
             }
-    
+
             function atualizarLista(data) {
                 let resultadoDiv = document.getElementById('resultado');
                 resultadoDiv.innerHTML = ''; // Limpar conteúdo anterior
-    
+
                 let lista = document.createElement('ul');
                 data.forEach(item => {
                     let listItem = document.createElement('li');
-                    listItem.textContent = `Nome: ${item.nome}, Disciplina: ${item.disciplina}, Matricula: ${item.matricula}`;
+                    listItem.textContent = `Nome: ${item.nome}, Disciplina: ${item.disciplinas}, Matricula: ${item.matricula}`;
                     lista.appendChild(listItem);
                 });
-    
+
                 resultadoDiv.appendChild(lista);
             }
+            document.addEventListener("DOMContentLoaded", function () {
+                fetch('/disciplinas') // Endpoint para obter as disciplinas do servidor
+                    .then(response => response.json())
+                    .then(data => {
+                        const checkboxContainer = document.getElementById('checkboxContainer');
+                        data.forEach(disciplina => {
+                            const checkbox = document.createElement('input');
+                            checkbox.type = 'checkbox';
+                            checkbox.name = 'disciplinas[]';
+                            checkbox.value = disciplina.id;
+                            checkbox.id = `disciplina_${disciplina.id}`;
+
+                            const label = document.createElement('label');
+                            label.htmlFor = `disciplina_${disciplina.id}`;
+                            label.textContent = disciplina.nome;
+
+                            checkboxContainer.appendChild(checkbox);
+                            checkboxContainer.appendChild(label);
+                            checkboxContainer.appendChild(document.createElement('br')); // Line break for spacing
+                        });
+                    })
+                    .catch(error => console.error('Erro ao obter disciplinas:', error));
+            });
+
         </script>
 
-        </div>
+    </div>
     </div>
 </body>
 
