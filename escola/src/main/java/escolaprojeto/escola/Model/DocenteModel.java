@@ -1,11 +1,16 @@
 package escolaprojeto.escola.Model;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 
 @Entity
 public class DocenteModel implements Serializable {
@@ -15,9 +20,12 @@ public class DocenteModel implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String nome;
-    private String disciplina;
     private String cpf;
     private String senha;
+
+    @JsonIgnore
+    @ManyToMany
+    private Set<DisciplinaModel> disciplinas = new HashSet<>();
 
 
     public String getCpf() {
@@ -47,11 +55,21 @@ public class DocenteModel implements Serializable {
     public void setNome(String nome) {
         this.nome = nome;
     }
-    public String getDisciplina() {
-        return disciplina;
+    public Set<DisciplinaModel> getDisciplinas() {
+        return disciplinas;
     }
-    public void setDisciplina(String disciplina) {
-        this.disciplina = disciplina;
+    public void setDisciplinas(Set<DisciplinaModel> disciplinas) {
+        this.disciplinas = disciplinas;
+    }
+
+    public void addDisciplina(DisciplinaModel disciplina) {
+        disciplinas.add(disciplina);
+        disciplina.getDocente().add(this);
+    }
+
+    public void removeDisciplina(DisciplinaModel disciplina) {
+        disciplinas.remove(disciplina);
+        disciplina.getDocente().remove(this);
     }
 
     

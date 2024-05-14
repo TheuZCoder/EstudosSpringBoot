@@ -1,0 +1,9 @@
+Pagina Administrador
+    -cadastro aluno 
+    -cadastro professor
+
+Pagina aluno
+    -Listar disciplinas cadastradas
+
+Pagina professor
+    -Listar alunos matriculados na sua disciplinas

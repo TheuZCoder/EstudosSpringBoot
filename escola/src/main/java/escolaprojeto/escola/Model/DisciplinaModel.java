@@ -22,6 +22,7 @@ public class DisciplinaModel implements Serializable {
 
     @ManyToMany(mappedBy = "disciplinas")
     private Set<AlunoModel> alunos = new HashSet<>();
+    private Set<DocenteModel> docente = new HashSet<>();
     
 
     public static long getSerialversionuid() {
@@ -58,6 +59,14 @@ public class DisciplinaModel implements Serializable {
 
     public void setAlunos(Set<AlunoModel> alunos) {
         this.alunos = alunos;
+    }
+
+    public Set<DocenteModel> getDocente() {
+        return docente;
+    }
+
+    public void setDocente(Set<DocenteModel> docente) {
+        this.docente = docente;
     }
 
     

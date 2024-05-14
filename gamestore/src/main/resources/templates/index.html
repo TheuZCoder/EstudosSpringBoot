@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="https://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{CSS/style.css}">
+    <title>Game Store</title>
+</head>
+<body>
+    <Header>
+        <nav> 
+            <ul>
+                <li><a th:href="@{/home}">Home</a></li>
+                <li><a th:href="@{/list}">Lista de Jogos</a></li>
+                <li><a th:href="@{/addgame}">Add Game</a></li>
+                <li><a th:href="@{/contact}">Contato</a></li>
+            </ul>
+        </nav>
+    </Header>
+</body>
+</html>

@@ -1,5 +1,7 @@
 package escolaprojeto.escola.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import escolaprojeto.escola.Model.DisciplinaModel;
 import escolaprojeto.escola.Model.DocenteModel;
+import escolaprojeto.escola.Repository.DisciplinaRepository;
 import escolaprojeto.escola.Repository.DocenteRepository;
 
 @Controller
@@ -17,22 +21,41 @@ public class DocenteController {
     @Autowired
     private DocenteRepository docenteRepository;
 
+    @Autowired
+    private DisciplinaRepository disciplinaRepository;
+
     boolean acessoProfessor = false;
 
     @PostMapping("/cadastro-docente")
-    public String postCadastroDocente(DocenteModel docente, Model model) {
+    public String postCadastroDocente(@RequestParam("disciplinas[]") List<String> disciplinas,
+            @RequestParam String cpf,
+            @RequestParam String nome,
+            @RequestParam String senha,
+            Model model) {
         // Verifica se algum campo obrigatório está vazio
-        if (docente.getNome() == null || docente.getNome().isEmpty() ||
-            docente.getDisciplina() == null || docente.getDisciplina().isEmpty() ||
-            docente.getCpf() == null || docente.getCpf().isEmpty() ||
-            docente.getSenha() == null || docente.getSenha().isEmpty()) {
+        if (nome == null || nome.isEmpty() ||
+                cpf == null || cpf.isEmpty() ||
+                disciplinas == null || disciplinas.isEmpty() ||
+                senha == null || senha.isEmpty()) {
             model.addAttribute("mensagem", "Por favor, preencha todos os campos.");
             return "interno/interna-adm";
         }
 
-        // Salva o docente se todos os campos estiverem preenchidos
+        // Crie um novo aluno e adicione as disciplinas selecionadas
+        DocenteModel docente = new DocenteModel();
+        docente.setNome(nome);
+        docente.setCpf(cpf);
+        docente.setSenha(senha);
+        for (String disciplinaId : disciplinas) {
+            DisciplinaModel disciplina = disciplinaRepository.findById(Long.parseLong(disciplinaId)).orElse(null);
+            if (disciplina != null) {
+                docente.addDisciplina(disciplina);
+            }
+        }
+
+        // Salva o aluno
         docenteRepository.save(docente);
-        model.addAttribute("mensagem", "Cadastro de docente realizado com sucesso!");
+        model.addAttribute("mensagem", "Cadastro de aluno realizado com sucesso!");
         return "interno/interna-adm";
     }
 
