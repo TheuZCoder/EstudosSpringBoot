@@ -4,12 +4,12 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 
 @Entity
@@ -23,8 +23,11 @@ public class AlunoModel implements Serializable {
     private String matricula;
     private String senha;
 
-    @JsonIgnore
-    @ManyToMany
+    
+    @ManyToMany()
+    @JoinTable(name = "aluno_model_disciplinas",
+    joinColumns = @JoinColumn(name = "alunos_id", referencedColumnName = "id"),
+    inverseJoinColumns = @JoinColumn(name = "disciplinas_id", referencedColumnName = "id"))
     private Set<DisciplinaModel> disciplinas = new HashSet<>();
 
    
